@@ -21,6 +21,27 @@ Sistem informasi sederhana untuk mengelola data warga dan pengumuman di lingkung
 - [x] Template `pengaduan_list.html`
 - [x] Admin registration untuk model `Pengaduan`
 
+### ✅ P3 - Interaksi Pengguna dengan Django Forms & CreateView
+- [x] `WargaForm` menggunakan ModelForm untuk form input warga
+- [x] `WargaCreateView` untuk menambahkan warga baru
+- [x] Template `warga_form.html` dengan CSRF token dan form rendering
+- [x] URL configuration untuk form tambah warga (`/tambah/`)
+- [x] Link "Tambah Warga Baru" di halaman list
+- [x] `PengaduanForm` dan `PengaduanCreateView` (Challenge)
+- [x] Template `pengaduan_form.html` dan URL `/pengaduan/tambah/`
+- [x] success_url menggunakan reverse_lazy
+
+### ✅ P4 - Melengkapi CRUD dengan UpdateView & DeleteView
+- [x] `WargaUpdateView` untuk mengedit data warga (menggunakan template yang sama)
+- [x] `WargaDeleteView` dengan halaman konfirmasi
+- [x] Template `warga_confirm_delete.html` dengan konfirmasi hapus
+- [x] URL patterns untuk edit (`/<pk>/edit/`) dan hapus (`/<pk>/hapus/`)
+- [x] Link "Edit Data" dan "Hapus Data" di halaman detail warga
+- [x] `PengaduanUpdateView` dan `PengaduanDeleteView` (Challenge)
+- [x] Template `pengaduan_confirm_delete.html`
+- [x] Link Edit dan Hapus di halaman daftar pengaduan
+- [x] Complete CRUD cycle untuk kedua model
+
 ## Struktur Proyek
 
 ```
@@ -83,9 +104,20 @@ data_kelurahan/
 
 ## URL Endpoints
 
+### Warga URLs
 - `/warga/` - Daftar semua warga (WargaListView)
+- `/warga/tambah/` - Form tambah warga baru (WargaCreateView)
 - `/warga/<id>/` - Detail warga beserta daftar pengaduannya (WargaDetailView)  
+- `/warga/<id>/edit/` - Form edit warga (WargaUpdateView)
+- `/warga/<id>/hapus/` - Konfirmasi hapus warga (WargaDeleteView)
+
+### Pengaduan URLs
 - `/warga/pengaduan/` - Daftar semua pengaduan (PengaduanListView)
+- `/warga/pengaduan/tambah/` - Form tambah pengaduan baru (PengaduanCreateView)
+- `/warga/pengaduan/<id>/edit/` - Form edit pengaduan (PengaduanUpdateView)
+- `/warga/pengaduan/<id>/hapus/` - Konfirmasi hapus pengaduan (PengaduanDeleteView)
+
+### Admin
 - `/admin/` - Interface admin Django
 
 ## Models
@@ -116,6 +148,14 @@ data_kelurahan/
 - QuerySet API untuk mengakses data terkait
 - Related manager (`warga.pengaduan.all()`)
 
+### Django Forms & CRUD Operations
+- ModelForm untuk otomatis generate form dari model
+- CSRF protection untuk keamanan form
+- CreateView, UpdateView, DeleteView untuk operasi CRUD lengkap
+- Form validation dan error handling
+- Success URL redirect setelah operasi berhasil
+- Confirmation pages untuk delete operations
+
 ### Admin Interface
 - Model registration untuk kemudahan pengelolaan data
 - Interface bawaan Django untuk CRUD operations
@@ -124,8 +164,8 @@ data_kelurahan/
 
 - ✅ **P1 (Framework Programming - Pertemuan 1)**: Completed
 - ✅ **P2 (Framework Programming - Pertemuan 2)**: Completed
-- ⏳ **P3**: Belum diimplementasi
-- ⏳ **P4**: Belum diimplementasi
+- ✅ **P3 (Framework Programming - Pertemuan 3)**: Completed
+- ✅ **P4 (Framework Programming - Pertemuan 4)**: Completed
 - ⏳ **P5**: Belum diimplementasi  
 - ⏳ **P6**: Belum diimplementasi
 

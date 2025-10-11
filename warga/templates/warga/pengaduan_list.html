@@ -5,6 +5,8 @@
 </head>
 <body>
     <h1>Daftar Semua Pengaduan</h1>
+    <a href="{% url 'pengaduan-tambah' %}">Tambah Pengaduan Baru</a>
+    <hr>
     <ul>
         {% for pengaduan in object_list %}
         <li>
@@ -12,6 +14,8 @@
             (Status: {{ pengaduan.get_status_display }})
             - Dilaporkan oleh: <strong>{{ pengaduan.pelapor.nama_lengkap }}</strong>
             <p>{{ pengaduan.deskripsi }}</p>
+            <a href="{% url 'pengaduan-edit' pengaduan.pk %}">Edit</a> |
+            <a href="{% url 'pengaduan-hapus' pengaduan.pk %}">Hapus</a>
         </li>
         {% empty %}
         <li>Belum ada pengaduan yang terdaftar.</li>

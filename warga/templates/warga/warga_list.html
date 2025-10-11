@@ -5,6 +5,22 @@
 </head>
 <body>
     <h1>Daftar Warga</h1>
+    <a href="{% url 'warga-tambah' %}">Tambah Warga Baru</a>
+    <hr>
+    <ul>
+        {% for warga in object_list %}
+         <li><a href="{% url 'warga-detail' warga.pk %}">{{ warga.nama_lengkap }}</a> - NIK: {{ warga.nik }} </li>
+        {% empty %}
+            <li>Belum ada data warga yang terdaftar.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html><html>
+<head>
+    <title>Daftar Warga Kelurahan</title>
+</head>
+<body>
+    <h1>Daftar Warga</h1>
     <ul>
         {% for warga in object_list %}
          <li><a href="{% url 'warga-detail' warga.pk %}">{{ warga.nama_lengkap }}</a> - NIK: {{ warga.nik }} </li>
