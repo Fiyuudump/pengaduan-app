@@ -42,6 +42,27 @@ Sistem informasi sederhana untuk mengelola data warga dan pengumuman di lingkung
 - [x] Link Edit dan Hapus di halaman daftar pengaduan
 - [x] Complete CRUD cycle untuk kedua model
 
+### ✅ P5 - Konsep Fundamental API & Dunia JSON
+- [x] Pemahaman arsitektur Monolitik vs Decoupled (Headless)
+- [x] Konsep API sebagai Application Programming Interface
+- [x] Prinsip REST (Representational State Transfer)
+- [x] Format JSON sebagai bahasa universal API
+- [x] Praktikum dengan API publik (reqres.in) menggunakan tools seperti Postman
+- [x] Understanding HTTP methods (GET, POST, PUT, DELETE)
+- [x] Status codes (200 OK, 201 Created, 404 Not Found)
+- [x] Dokumentasi konsep API dalam file `P5_API_Concepts.md`
+
+### ✅ P6 - Hello, API! Pengenalan Django REST Framework (DRF)
+- [x] Instalasi dan konfigurasi Django REST Framework
+- [x] `WargaSerializer` menggunakan ModelSerializer
+- [x] `WargaListAPIView` menggunakan ListAPIView untuk endpoint list
+- [x] `WargaDetailAPIView` menggunakan RetrieveAPIView (Challenge)
+- [x] File `serializers.py` untuk data serialization
+- [x] File `api_urls.py` untuk API URL configuration
+- [x] Browsable API interface untuk testing dan debugging
+- [x] Endpoint `/api/warga/` untuk list semua warga dalam format JSON
+- [x] Endpoint `/api/warga/<id>/` untuk detail warga spesifik
+
 ## Struktur Proyek
 
 ```
@@ -117,6 +138,10 @@ data_kelurahan/
 - `/warga/pengaduan/<id>/edit/` - Form edit pengaduan (PengaduanUpdateView)
 - `/warga/pengaduan/<id>/hapus/` - Konfirmasi hapus pengaduan (PengaduanDeleteView)
 
+### API Endpoints (JSON)
+- `/api/warga/` - List semua warga dalam format JSON (WargaListAPIView)
+- `/api/warga/<id>/` - Detail warga spesifik dalam format JSON (WargaDetailAPIView)
+
 ### Admin
 - `/admin/` - Interface admin Django
 
@@ -156,6 +181,14 @@ data_kelurahan/
 - Success URL redirect setelah operasi berhasil
 - Confirmation pages untuk delete operations
 
+### API Development dengan Django REST Framework
+- REST API architecture dengan JSON response
+- ModelSerializer untuk data serialization/deserialization
+- ListAPIView dan RetrieveAPIView untuk read-only endpoints
+- Browsable API untuk testing dan debugging
+- Separation of API URLs dari web URLs
+- HTTP status codes dan RESTful principles
+
 ### Admin Interface
 - Model registration untuk kemudahan pengelolaan data
 - Interface bawaan Django untuk CRUD operations
@@ -166,13 +199,15 @@ data_kelurahan/
 - ✅ **P2 (Framework Programming - Pertemuan 2)**: Completed
 - ✅ **P3 (Framework Programming - Pertemuan 3)**: Completed
 - ✅ **P4 (Framework Programming - Pertemuan 4)**: Completed
-- ⏳ **P5**: Belum diimplementasi  
-- ⏳ **P6**: Belum diimplementasi
+- ✅ **P5 (Framework Programming - Pertemuan 5)**: Completed
+- ✅ **P6 (Framework Programming - Pertemuan 6)**: Completed
 
 ## Teknologi
 
 - **Framework**: Django 5.2.7
+- **API Framework**: Django REST Framework
 - **Database**: SQLite3
 - **Python**: 3.13.7
 - **Template Engine**: Django Templates
+- **API Format**: JSON
 - **Environment**: Virtual Environment (myenv)

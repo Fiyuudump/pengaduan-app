@@ -48,3 +48,16 @@ class PengaduanDeleteView(DeleteView):
     model = Pengaduan
     template_name = 'warga/pengaduan_confirm_delete.html'
     success_url = reverse_lazy('pengaduan-list')
+
+# Impor baru untuk DRF
+from rest_framework.generics import ListAPIView, RetrieveAPIView
+from .serializers import WargaSerializer
+
+# --- API VIEWS ---
+class WargaListAPIView(ListAPIView):
+    queryset = Warga.objects.all()
+    serializer_class = WargaSerializer
+
+class WargaDetailAPIView(RetrieveAPIView):
+    queryset = Warga.objects.all()
+    serializer_class = WargaSerializer
