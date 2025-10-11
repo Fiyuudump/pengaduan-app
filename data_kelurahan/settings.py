@@ -38,8 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'warga',
-
-    # Tambahkan di bawahnya
     'rest_framework',
 ]
 

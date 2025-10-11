@@ -51,7 +51,7 @@ class PengaduanDeleteView(DeleteView):
 
 # Impor baru untuk DRF
 from rest_framework.generics import ListAPIView, RetrieveAPIView
-from .serializers import WargaSerializer
+from .serializers import WargaSerializer, PengaduanSerializer
 
 # --- API VIEWS ---
 class WargaListAPIView(ListAPIView):
@@ -61,3 +61,11 @@ class WargaListAPIView(ListAPIView):
 class WargaDetailAPIView(RetrieveAPIView):
     queryset = Warga.objects.all()
     serializer_class = WargaSerializer
+
+class PengaduanListAPIView(ListAPIView):
+    queryset = Pengaduan.objects.all()
+    serializer_class = PengaduanSerializer
+
+class PengaduanDetailAPIView(RetrieveAPIView):
+    queryset = Pengaduan.objects.all()
+    serializer_class = PengaduanSerializer
