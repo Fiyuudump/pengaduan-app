@@ -57,11 +57,13 @@ Sistem informasi sederhana untuk mengelola data warga dan pengumuman di lingkung
 - [x] `WargaSerializer` menggunakan ModelSerializer
 - [x] `WargaListAPIView` menggunakan ListAPIView untuk endpoint list
 - [x] `WargaDetailAPIView` menggunakan RetrieveAPIView (Challenge)
+- [x] `PengaduanSerializer` dengan relasi pelapor_nama (read_only)
+- [x] `PengaduanListAPIView` dan `PengaduanDetailAPIView` untuk API pengaduan
 - [x] File `serializers.py` untuk data serialization
 - [x] File `api_urls.py` untuk API URL configuration
 - [x] Browsable API interface untuk testing dan debugging
-- [x] Endpoint `/api/warga/` untuk list semua warga dalam format JSON
-- [x] Endpoint `/api/warga/<id>/` untuk detail warga spesifik
+- [x] Complete API endpoints untuk kedua model (Warga & Pengaduan)
+- [x] Navigation links antar halaman untuk user experience
 
 ## Struktur Proyek
 
@@ -141,6 +143,8 @@ data_kelurahan/
 ### API Endpoints (JSON)
 - `/api/warga/` - List semua warga dalam format JSON (WargaListAPIView)
 - `/api/warga/<id>/` - Detail warga spesifik dalam format JSON (WargaDetailAPIView)
+- `/api/pengaduan/` - List semua pengaduan dalam format JSON (PengaduanListAPIView)
+- `/api/pengaduan/<id>/` - Detail pengaduan spesifik dalam format JSON (PengaduanDetailAPIView)
 
 ### Admin
 - `/admin/` - Interface admin Django
