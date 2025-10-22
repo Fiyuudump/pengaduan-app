@@ -1,0 +1,111 @@
+type: collection.insomnia.rest/5.0
+name: Framework Programming Collection
+meta:
+  id: wrk_a71aa44bdbd74b2a94ff7cabb1feb8fd
+  created: 1752571227891
+  modified: 1761126967399
+  description: ""
+collection:
+  - url: https://reqres.in/api/users
+    name: "[200] Read Users"
+    meta:
+      id: req_762dbe7bc8c5462e9f65dfa5f6277ed9
+      created: 1761126360980
+      modified: 1761126871753
+      isPrivate: false
+      description: ""
+      sortKey: -1761126360980
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/11.6.0
+        id: pair_6fd42d4544ae4d7085fdb7714d6dab4c
+      - id: pair_ee54feb53d404c0cb8172ab13709cb67
+        name: x-api-key
+        value: reqres-free-v1
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: https://reqres.in/api/users
+    name: "[201] Create User"
+    meta:
+      id: req_291fb4a30a3842d482ea4b8979c785d7
+      created: 1761126703446
+      modified: 1761126886573
+      isPrivate: false
+      description: ""
+      sortKey: -1761126360930
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"name": "Nama Anda",
+        	"job": "Mahasiswa"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.6.0
+        id: pair_6fd42d4544ae4d7085fdb7714d6dab4c
+      - id: pair_ee54feb53d404c0cb8172ab13709cb67
+        name: x-api-key
+        value: reqres-free-v1
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: https://reqres.in/api/users/99
+    name: "[404] Read User"
+    meta:
+      id: req_6fa0fab193614abfb6e3481fe44a92f9
+      created: 1761126927950
+      modified: 1761126934105
+      isPrivate: false
+      description: ""
+      sortKey: -1761126360955
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/11.6.0
+        id: pair_6fd42d4544ae4d7085fdb7714d6dab4c
+      - id: pair_ee54feb53d404c0cb8172ab13709cb67
+        name: x-api-key
+        value: reqres-free-v1
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_9e201047ec896bca4985683549e2ada4867936d6
+    created: 1752571227898
+    modified: 1752571227898
+environments:
+  name: Base Environment
+  meta:
+    id: env_9e201047ec896bca4985683549e2ada4867936d6
+    created: 1752571227894
+    modified: 1752571227894
+    isPrivate: false
