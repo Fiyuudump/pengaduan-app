@@ -50,22 +50,17 @@ class PengaduanDeleteView(DeleteView):
     success_url = reverse_lazy('pengaduan-list')
 
 # Impor baru untuk DRF
-from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework import viewsets
 from .serializers import WargaSerializer, PengaduanSerializer
 
 # --- API VIEWS ---
-class WargaListAPIView(ListAPIView):
-    queryset = Warga.objects.all()
+class WargaViewSet(viewsets.ModelViewSet):
+    """CRUD endpoint for data warga."""
+    queryset = Warga.objects.all().order_by('-tanggal_registrasi')
     serializer_class = WargaSerializer
 
-class WargaDetailAPIView(RetrieveAPIView):
-    queryset = Warga.objects.all()
-    serializer_class = WargaSerializer
 
-class PengaduanListAPIView(ListAPIView):
-    queryset = Pengaduan.objects.all()
-    serializer_class = PengaduanSerializer
-
-class PengaduanDetailAPIView(RetrieveAPIView):
-    queryset = Pengaduan.objects.all()
+class PengaduanViewSet(viewsets.ModelViewSet):
+    """CRUD endpoint for data pengaduan."""
+    queryset = Pengaduan.objects.all().order_by('-tanggal_lapor')
     serializer_class = PengaduanSerializer
