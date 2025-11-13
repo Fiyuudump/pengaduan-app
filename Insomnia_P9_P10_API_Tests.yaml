@@ -1,0 +1,715 @@
+_type: export
+__export_format: 4
+__export_date: 2025-11-12T20:50:00.000Z
+__export_source: insomnia.desktop.app:v2023.5.8
+resources:
+  - _id: req_auth_get_token
+    type: Request
+    parentId: fld_authentication
+    modified: 1699824000000
+    created: 1699824000000
+    url: "{{ _.base_url }}/api/auth/token/"
+    name: "[P9] Get Authentication Token"
+    description: "P9: Mendapatkan token authentication untuk akses protected endpoints"
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "username": "{{ _.username }}",
+          "password": "{{ _.password }}"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+    authentication: {}
+    metaSortKey: -1699824000000
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+
+  - _id: req_warga_list_public
+    type: Request
+    parentId: fld_warga
+    modified: 1699824100000
+    created: 1699824100000
+    url: "{{ _.base_url }}/api/warga/"
+    name: "[P9] List Warga - Public Access (No Auth)"
+    description: "P9: IsAuthenticatedOrReadOnly - Public dapat read\nP10: Response dengan pagination"
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1699824100000
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+
+  - _id: req_warga_create_no_auth
+    type: Request
+    parentId: fld_warga
+    modified: 1699824200000
+    created: 1699824200000
+    url: "{{ _.base_url }}/api/warga/"
+    name: "[P9] Create Warga - No Auth (Should Fail 401)"
+    description: "P9: Test IsAuthenticatedOrReadOnly - POST tanpa token harus gagal"
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "nik": "1234567890123456",
+          "nama_lengkap": "Test User",
+          "alamat": "Test Address",
+          "no_telepon": "081234567890"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+    authentication: {}
+    metaSortKey: -1699824200000
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+
+  - _id: req_warga_create_with_auth
+    type: Request
+    parentId: fld_warga
+    modified: 1699824300000
+    created: 1699824300000
+    url: "{{ _.base_url }}/api/warga/"
+    name: "[P9] Create Warga - With Auth (Should Success)"
+    description: "P9: Test dengan token authentication"
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "nik": "3501234567890099",
+          "nama_lengkap": "User Baru",
+          "alamat": "Jl. Test No. 99",
+          "no_telepon": "081234567899"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: Authorization
+        value: "Token {{ _.auth_token }}"
+    authentication: {}
+    metaSortKey: -1699824300000
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+
+  - _id: req_pengaduan_list_no_auth
+    type: Request
+    parentId: fld_pengaduan
+    modified: 1699824400000
+    created: 1699824400000
+    url: "{{ _.base_url }}/api/pengaduan/"
+    name: "[P9] List Pengaduan - No Auth (Should Fail 401)"
+    description: "P9: IsAuthenticated - Harus gagal tanpa token"
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1699824400000
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+
+  - _id: req_pengaduan_list_with_auth
+    type: Request
+    parentId: fld_pengaduan
+    modified: 1699824500000
+    created: 1699824500000
+    url: "{{ _.base_url }}/api/pengaduan/"
+    name: "[P9] List Pengaduan - With Auth (Should Success)"
+    description: "P9: IsAuthenticated - Berhasil dengan token\nP10: Response dengan pagination"
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: Authorization
+        value: "Token {{ _.auth_token }}"
+    authentication: {}
+    metaSortKey: -1699824500000
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+
+  - _id: req_warga_pagination_page1
+    type: Request
+    parentId: fld_pagination
+    modified: 1699824600000
+    created: 1699824600000
+    url: "{{ _.base_url }}/api/warga/"
+    name: "[P10] Pagination - Page 1"
+    description: "P10: Test pagination page pertama (10 items)"
+    method: GET
+    body: {}
+    parameters:
+      - name: page
+        value: "1"
+    headers: []
+    authentication: {}
+    metaSortKey: -1699824600000
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+
+  - _id: req_warga_pagination_page2
+    type: Request
+    parentId: fld_pagination
+    modified: 1699824700000
+    created: 1699824700000
+    url: "{{ _.base_url }}/api/warga/"
+    name: "[P10] Pagination - Page 2"
+    description: "P10: Test pagination page kedua"
+    method: GET
+    body: {}
+    parameters:
+      - name: page
+        value: "2"
+    headers: []
+    authentication: {}
+    metaSortKey: -1699824700000
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+
+  - _id: req_warga_search_nama
+    type: Request
+    parentId: fld_search
+    modified: 1699824800000
+    created: 1699824800000
+    url: "{{ _.base_url }}/api/warga/"
+    name: "[P10] Search Warga by Nama"
+    description: "P10: SearchFilter - Cari berdasarkan nama_lengkap"
+    method: GET
+    body: {}
+    parameters:
+      - name: search
+        value: Budi
+    headers: []
+    authentication: {}
+    metaSortKey: -1699824800000
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+
+  - _id: req_warga_search_nik
+    type: Request
+    parentId: fld_search
+    modified: 1699824900000
+    created: 1699824900000
+    url: "{{ _.base_url }}/api/warga/"
+    name: "[P10] Search Warga by NIK"
+    description: "P10: SearchFilter - Cari berdasarkan NIK"
+    method: GET
+    body: {}
+    parameters:
+      - name: search
+        value: "3501234567890001"
+    headers: []
+    authentication: {}
+    metaSortKey: -1699824900000
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+
+  - _id: req_warga_search_alamat
+    type: Request
+    parentId: fld_search
+    modified: 1699825000000
+    created: 1699825000000
+    url: "{{ _.base_url }}/api/warga/"
+    name: "[P10] Search Warga by Alamat"
+    description: "P10: SearchFilter - Cari berdasarkan alamat"
+    method: GET
+    body: {}
+    parameters:
+      - name: search
+        value: Merdeka
+    headers: []
+    authentication: {}
+    metaSortKey: -1699825000000
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+
+  - _id: req_pengaduan_search_judul
+    type: Request
+    parentId: fld_search
+    modified: 1699825100000
+    created: 1699825100000
+    url: "{{ _.base_url }}/api/pengaduan/"
+    name: "[P10] Search Pengaduan by Judul (Need Auth)"
+    description: "P10: SearchFilter - Cari berdasarkan judul"
+    method: GET
+    body: {}
+    parameters:
+      - name: search
+        value: jalan
+    headers:
+      - name: Authorization
+        value: "Token {{ _.auth_token }}"
+    authentication: {}
+    metaSortKey: -1699825100000
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+
+  - _id: req_pengaduan_search_deskripsi
+    type: Request
+    parentId: fld_search
+    modified: 1699825200000
+    created: 1699825200000
+    url: "{{ _.base_url }}/api/pengaduan/"
+    name: "[P10] Search Pengaduan by Deskripsi (Need Auth)"
+    description: "P10: SearchFilter - Cari berdasarkan deskripsi"
+    method: GET
+    body: {}
+    parameters:
+      - name: search
+        value: rusak
+    headers:
+      - name: Authorization
+        value: "Token {{ _.auth_token }}"
+    authentication: {}
+    metaSortKey: -1699825200000
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+
+  - _id: req_warga_order_nama_asc
+    type: Request
+    parentId: fld_ordering
+    modified: 1699825300000
+    created: 1699825300000
+    url: "{{ _.base_url }}/api/warga/"
+    name: "[P10] Order Warga by Nama (A-Z)"
+    description: "P10: OrderingFilter - Ascending order"
+    method: GET
+    body: {}
+    parameters:
+      - name: ordering
+        value: nama_lengkap
+    headers: []
+    authentication: {}
+    metaSortKey: -1699825300000
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+
+  - _id: req_warga_order_nama_desc
+    type: Request
+    parentId: fld_ordering
+    modified: 1699825400000
+    created: 1699825400000
+    url: "{{ _.base_url }}/api/warga/"
+    name: "[P10] Order Warga by Nama (Z-A)"
+    description: "P10: OrderingFilter - Descending order"
+    method: GET
+    body: {}
+    parameters:
+      - name: ordering
+        value: "-nama_lengkap"
+    headers: []
+    authentication: {}
+    metaSortKey: -1699825400000
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+
+  - _id: req_warga_order_tanggal_desc
+    type: Request
+    parentId: fld_ordering
+    modified: 1699825500000
+    created: 1699825500000
+    url: "{{ _.base_url }}/api/warga/"
+    name: "[P10] Order Warga by Tanggal (Newest First)"
+    description: "P10: OrderingFilter - Order by tanggal_registrasi descending"
+    method: GET
+    body: {}
+    parameters:
+      - name: ordering
+        value: "-tanggal_registrasi"
+    headers: []
+    authentication: {}
+    metaSortKey: -1699825500000
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+
+  - _id: req_pengaduan_order_status
+    type: Request
+    parentId: fld_ordering
+    modified: 1699825600000
+    created: 1699825600000
+    url: "{{ _.base_url }}/api/pengaduan/"
+    name: "[P10] Order Pengaduan by Status (Need Auth)"
+    description: "P10: OrderingFilter - Order by status"
+    method: GET
+    body: {}
+    parameters:
+      - name: ordering
+        value: status
+    headers:
+      - name: Authorization
+        value: "Token {{ _.auth_token }}"
+    authentication: {}
+    metaSortKey: -1699825600000
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+
+  - _id: req_pengaduan_order_tanggal_desc
+    type: Request
+    parentId: fld_ordering
+    modified: 1699825700000
+    created: 1699825700000
+    url: "{{ _.base_url }}/api/pengaduan/"
+    name: "[P10] Order Pengaduan by Tanggal (Newest First)"
+    description: "P10: OrderingFilter - Order by tanggal_lapor descending"
+    method: GET
+    body: {}
+    parameters:
+      - name: ordering
+        value: "-tanggal_lapor"
+    headers:
+      - name: Authorization
+        value: "Token {{ _.auth_token }}"
+    authentication: {}
+    metaSortKey: -1699825700000
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+
+  - _id: req_warga_combined_query
+    type: Request
+    parentId: fld_combined
+    modified: 1699825800000
+    created: 1699825800000
+    url: "{{ _.base_url }}/api/warga/"
+    name: "[P10] Combined Query - Search + Order + Page"
+    description: "P10: Kombinasi search, ordering, dan pagination"
+    method: GET
+    body: {}
+    parameters:
+      - name: search
+        value: a
+      - name: ordering
+        value: nama_lengkap
+      - name: page
+        value: "1"
+    headers: []
+    authentication: {}
+    metaSortKey: -1699825800000
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+
+  - _id: req_pengaduan_combined_query
+    type: Request
+    parentId: fld_combined
+    modified: 1699825900000
+    created: 1699825900000
+    url: "{{ _.base_url }}/api/pengaduan/"
+    name: "[P10] Combined Query Pengaduan (Need Auth)"
+    description: "P10: Kombinasi search + ordering + pagination dengan auth"
+    method: GET
+    body: {}
+    parameters:
+      - name: search
+        value: jalan
+      - name: ordering
+        value: "-tanggal_lapor"
+      - name: page
+        value: "1"
+    headers:
+      - name: Authorization
+        value: "Token {{ _.auth_token }}"
+    authentication: {}
+    metaSortKey: -1699825900000
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+
+  - _id: req_warga_detail
+    type: Request
+    parentId: fld_warga
+    modified: 1699826000000
+    created: 1699826000000
+    url: "{{ _.base_url }}/api/warga/1/"
+    name: "[P9] Warga Detail - Public Access"
+    description: "P9: IsAuthenticatedOrReadOnly - Detail dapat diakses public"
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1699826000000
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+
+  - _id: req_warga_update_with_auth
+    type: Request
+    parentId: fld_warga
+    modified: 1699826100000
+    created: 1699826100000
+    url: "{{ _.base_url }}/api/warga/1/"
+    name: "[P9] Update Warga - With Auth"
+    description: "P9: Test PUT/PATCH dengan token"
+    method: PUT
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "nik": "2320101010",
+          "nama_lengkap": "Galang Updated",
+          "alamat": "Jl.Sawojajar 5 (Updated)",
+          "no_telepon": "081238479684"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: Authorization
+        value: "Token {{ _.auth_token }}"
+    authentication: {}
+    metaSortKey: -1699826100000
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+
+  - _id: req_warga_delete_no_auth
+    type: Request
+    parentId: fld_warga
+    modified: 1699826200000
+    created: 1699826200000
+    url: "{{ _.base_url }}/api/warga/999/"
+    name: "[P9] Delete Warga - No Auth (Should Fail 401)"
+    description: "P9: Test DELETE tanpa token harus gagal"
+    method: DELETE
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1699826200000
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+
+  - _id: fld_authentication
+    type: RequestGroup
+    parentId: wrk_main
+    modified: 1699824000000
+    created: 1699824000000
+    name: "P9 - Authentication"
+    description: "Token Authentication Tests"
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1699824000000
+
+  - _id: fld_warga
+    type: RequestGroup
+    parentId: wrk_main
+    modified: 1699824100000
+    created: 1699824100000
+    name: "P9 - Warga Permissions"
+    description: "IsAuthenticatedOrReadOnly Tests"
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1699824100000
+
+  - _id: fld_pengaduan
+    type: RequestGroup
+    parentId: wrk_main
+    modified: 1699824400000
+    created: 1699824400000
+    name: "P9 - Pengaduan Permissions"
+    description: "IsAuthenticated Tests"
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1699824400000
+
+  - _id: fld_pagination
+    type: RequestGroup
+    parentId: wrk_main
+    modified: 1699824600000
+    created: 1699824600000
+    name: "P10 - Pagination"
+    description: "PageNumberPagination Tests"
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1699824600000
+
+  - _id: fld_search
+    type: RequestGroup
+    parentId: wrk_main
+    modified: 1699824800000
+    created: 1699824800000
+    name: "P10 - Searching"
+    description: "SearchFilter Tests"
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1699824800000
+
+  - _id: fld_ordering
+    type: RequestGroup
+    parentId: wrk_main
+    modified: 1699825300000
+    created: 1699825300000
+    name: "P10 - Ordering"
+    description: "OrderingFilter Tests"
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1699825300000
+
+  - _id: fld_combined
+    type: RequestGroup
+    parentId: wrk_main
+    modified: 1699825800000
+    created: 1699825800000
+    name: "P10 - Combined Queries"
+    description: "Combined Query Parameters Tests"
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1699825800000
+
+  - _id: wrk_main
+    type: Workspace
+    parentId: null
+    modified: 1699824000000
+    created: 1699824000000
+    name: "Framework Programming - P9 & P10 API Tests"
+    description: "Comprehensive API testing for Authentication, Permissions, Pagination, Searching, and Ordering"
+    scope: collection
+
+  - _id: env_main
+    type: Environment
+    parentId: wrk_main
+    modified: 1699824000000
+    created: 1699824000000
+    name: "Base Environment"
+    data:
+      base_url: "http://127.0.0.1:8000"
+      username: "admin"
+      password: "admin123"
+      auth_token: ""
+    dataPropertyOrder:
+      "&":
+        - base_url
+        - username
+        - password
+        - auth_token
+    color: null
+    isPrivate: false
+    metaSortKey: 1699824000000
+
+  - _id: jar_main
+    type: CookieJar
+    parentId: wrk_main
+    modified: 1699824000000
+    created: 1699824000000
+    name: "Default Jar"
+    cookies: []
