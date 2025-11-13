@@ -65,6 +65,39 @@ Sistem informasi sederhana untuk mengelola data warga dan pengumuman di lingkung
 - [x] Complete API endpoints untuk kedua model (Warga & Pengaduan)
 - [x] Navigation links antar halaman untuk user experience
 
+### ✅ P7 - ViewSets & Routers: Menyederhanakan Arsitektur API
+- [x] Refactoring dari APIView ke ViewSet architecture
+- [x] `WargaViewSet` menggunakan ModelViewSet untuk operasi CRUD lengkap
+- [x] `PengaduanViewSet` menggunakan ModelViewSet
+- [x] Implementasi Router untuk automatic URL routing
+- [x] Single endpoint untuk multiple operations (list, create, retrieve, update, delete)
+- [x] Reduced code complexity dengan ViewSet pattern
+- [x] RESTful URL structure dengan Router
+
+### ✅ P9 - Mengamankan API dengan Autentikasi & Permissions
+- [x] Token Authentication implementation untuk API security
+- [x] `rest_framework.authtoken` app configuration
+- [x] Token endpoint `/api/auth/token/` untuk mendapatkan auth token
+- [x] Global authentication dan permission classes configuration
+- [x] `IsAuthenticatedOrReadOnly` permission untuk WargaViewSet
+- [x] `IsAuthenticated` permission untuk PengaduanViewSet
+- [x] Token-based authentication untuk protected endpoints
+- [x] Role-based access control (public read vs authenticated write)
+- [x] Security best practices untuk production-ready API
+
+### ✅ P10 - Fitur Esensial: Filtering, Searching, & Pagination
+- [x] Django-filter package installation dan configuration
+- [x] Global pagination dengan PageNumberPagination
+- [x] PAGE_SIZE configuration (10 items per page)
+- [x] SearchFilter implementation untuk full-text search
+- [x] OrderingFilter untuk dynamic data sorting
+- [x] WargaViewSet: search by nama_lengkap, nik, alamat
+- [x] WargaViewSet: ordering by nama_lengkap, tanggal_registrasi
+- [x] PengaduanViewSet: search by judul, deskripsi
+- [x] PengaduanViewSet: ordering by status, tanggal_lapor
+- [x] Query parameters support (?search=, ?ordering=, ?page=)
+- [x] Paginated API responses dengan count, next, previous links
+
 ## Struktur Proyek
 
 ```
@@ -75,22 +108,29 @@ data_kelurahan/
 ├── populate_data.py
 ├── data_kelurahan/
 │   ├── __init__.py
-│   ├── settings.py
-│   ├── urls.py
+│   ├── settings.py          # P9 & P10: REST_FRAMEWORK configuration
+│   ├── urls.py               # P9: Token auth endpoint
 │   └── wsgi.py
 └── warga/
     ├── __init__.py
     ├── admin.py
     ├── apps.py
     ├── models.py
-    ├── views.py
+    ├── views.py              # P9 & P10: ViewSets with permissions & filters
+    ├── serializers.py
     ├── urls.py
+    ├── api_urls.py
+    ├── forms.py
     ├── migrations/
     └── templates/
         └── warga/
             ├── warga_list.html
             ├── warga_detail.html
-            └── pengaduan_list.html
+            ├── warga_form.html
+            ├── warga_confirm_delete.html
+            ├── pengaduan_list.html
+            ├── pengaduan_form.html
+            └── pengaduan_confirm_delete.html
 ```
 
 ## Cara Menjalankan
@@ -115,7 +155,7 @@ data_kelurahan/
    python populate_data.py
    ```
 
-5. **Membuat Superuser (Opsional):**
+5. **Membuat Superuser (Untuk API Authentication):**
    ```bash
    python manage.py createsuperuser
    ```
@@ -124,6 +164,19 @@ data_kelurahan/
    ```bash
    python manage.py runserver
    ```
+
+7. **Mendapatkan Token Authentication (P9):**
+   ```bash
+   curl -X POST http://127.0.0.1:8000/api/auth/token/ \
+     -H "Content-Type: application/json" \
+     -d '{"username": "your_username", "password": "your_password"}'
+   ```
+   
+   Atau gunakan Postman:
+   - Method: POST
+   - URL: `http://127.0.0.1:8000/api/auth/token/`
+   - Body (JSON): `{"username": "your_username", "password": "your_password"}`
+   - Response akan berisi token yang perlu disimpan
 
 ## URL Endpoints
 
@@ -145,6 +198,49 @@ data_kelurahan/
 - `/api/warga/<id>/` - Detail warga spesifik dalam format JSON (WargaDetailAPIView)
 - `/api/pengaduan/` - List semua pengaduan dalam format JSON (PengaduanListAPIView)
 - `/api/pengaduan/<id>/` - Detail pengaduan spesifik dalam format JSON (PengaduanDetailAPIView)
+
+### API Authentication & Security (P9)
+- `/api/auth/token/` - **POST** endpoint untuk mendapatkan authentication token
+  - Request Body: `{"username": "your_username", "password": "your_password"}`
+  - Response: `{"token": "your_auth_token_here"}`
+  - Token harus disertakan dalam header untuk protected endpoints
+
+### API Query Parameters (P10)
+Semua list endpoints mendukung query parameters berikut:
+
+#### Pagination
+- `?page=<number>` - Navigasi ke halaman tertentu
+- Contoh: `/api/warga/?page=2`
+- Response includes: `count`, `next`, `previous`, `results`
+
+#### Searching (WargaViewSet)
+- `?search=<keyword>` - Cari di fields: nama_lengkap, nik, alamat
+- Contoh: `/api/warga/?search=Budi`
+- Contoh: `/api/warga/?search=3501234567890001`
+
+#### Searching (PengaduanViewSet)
+- `?search=<keyword>` - Cari di fields: judul, deskripsi
+- Contoh: `/api/pengaduan/?search=jalan`
+- Contoh: `/api/pengaduan/?search=rusak`
+
+#### Ordering (WargaViewSet)
+- `?ordering=<field>` - Urutkan ascending
+- `?ordering=-<field>` - Urutkan descending
+- Fields: `nama_lengkap`, `tanggal_registrasi`
+- Contoh: `/api/warga/?ordering=nama_lengkap` (A-Z)
+- Contoh: `/api/warga/?ordering=-tanggal_registrasi` (terbaru dulu)
+
+#### Ordering (PengaduanViewSet)
+- `?ordering=<field>` - Urutkan ascending
+- `?ordering=-<field>` - Urutkan descending
+- Fields: `status`, `tanggal_lapor`
+- Contoh: `/api/pengaduan/?ordering=status`
+- Contoh: `/api/pengaduan/?ordering=-tanggal_lapor`
+
+#### Kombinasi Query Parameters
+Query parameters dapat dikombinasikan:
+- `/api/warga/?search=Budi&ordering=nama_lengkap&page=1`
+- `/api/pengaduan/?search=jalan&ordering=-tanggal_lapor&page=1`
 
 ### Admin
 - `/admin/` - Interface admin Django
@@ -188,10 +284,35 @@ data_kelurahan/
 ### API Development dengan Django REST Framework
 - REST API architecture dengan JSON response
 - ModelSerializer untuk data serialization/deserialization
-- ListAPIView dan RetrieveAPIView untuk read-only endpoints
+- ViewSets untuk full CRUD operations dengan single class
+- Router untuk automatic URL routing
 - Browsable API untuk testing dan debugging
 - Separation of API URLs dari web URLs
 - HTTP status codes dan RESTful principles
+
+### API Security & Authentication (P9)
+- **Token Authentication** untuk mengamankan API endpoints
+- Token generation endpoint untuk user login
+- **Permission Classes** untuk access control:
+  - `IsAuthenticatedOrReadOnly`: Public dapat read, authenticated dapat write
+  - `IsAuthenticated`: Hanya authenticated users yang dapat akses
+- Role-based access control (RBAC)
+- Header-based authentication dengan format: `Authorization: Token <your_token>`
+- Secure API endpoints sesuai business logic
+
+### API Advanced Features (P10)
+- **Pagination**: Automatic response pagination dengan 10 items per page
+  - Response structure: `count`, `next`, `previous`, `results`
+  - Page navigation dengan query parameter `?page=<number>`
+- **Searching**: Full-text search dengan SearchFilter
+  - Multiple field searching (nama_lengkap, nik, alamat untuk Warga)
+  - Multiple field searching (judul, deskripsi untuk Pengaduan)
+  - Query parameter: `?search=<keyword>`
+- **Ordering**: Dynamic sorting dengan OrderingFilter
+  - Ascending dan descending sort
+  - Query parameters: `?ordering=<field>` atau `?ordering=-<field>`
+- **Query Combination**: Multiple query parameters dapat dikombinasikan
+- Performance optimization untuk large datasets
 
 ### Admin Interface
 - Model registration untuk kemudahan pengelolaan data
@@ -205,13 +326,252 @@ data_kelurahan/
 - ✅ **P4 (Framework Programming - Pertemuan 4)**: Completed
 - ✅ **P5 (Framework Programming - Pertemuan 5)**: Completed
 - ✅ **P6 (Framework Programming - Pertemuan 6)**: Completed
+- ✅ **P7 (Framework Programming - Pertemuan 7)**: Completed
+- ✅ **P9 (Framework Programming - Pertemuan 9)**: Completed - Authentication & Permissions
+- ✅ **P10 (Framework Programming - Pertemuan 10)**: Completed - Filtering, Searching & Pagination
+
+## Penggunaan API dengan Authentication
+
+### 1. Mendapatkan Token (Login)
+```bash
+# Menggunakan curl
+curl -X POST http://127.0.0.1:8000/api/auth/token/ \
+  -H "Content-Type: application/json" \
+  -d '{"username": "admin", "password": "admin123"}'
+
+# Response
+{"token": "9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b"}
+```
+
+### 2. Mengakses Protected Endpoint
+```bash
+# Menggunakan token di header
+curl -X GET http://127.0.0.1:8000/api/pengaduan/ \
+  -H "Authorization: Token 9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b"
+
+# Tanpa token akan mendapat 401 Unauthorized
+curl -X GET http://127.0.0.1:8000/api/pengaduan/
+# Response: {"detail":"Authentication credentials were not provided."}
+```
+
+### 3. Public Read Access (Warga Endpoint)
+```bash
+# GET request tidak perlu token (IsAuthenticatedOrReadOnly)
+curl -X GET http://127.0.0.1:8000/api/warga/
+
+# Tapi POST/PUT/DELETE perlu token
+curl -X POST http://127.0.0.1:8000/api/warga/ \
+  -H "Authorization: Token YOUR_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"nik": "1234567890123456", "nama_lengkap": "Test User", "alamat": "Test Address"}'
+```
+
+### 4. Menggunakan Pagination
+```bash
+# Halaman pertama (default)
+curl http://127.0.0.1:8000/api/warga/
+
+# Response structure:
+# {
+#   "count": 25,
+#   "next": "http://127.0.0.1:8000/api/warga/?page=2",
+#   "previous": null,
+#   "results": [...]
+# }
+
+# Halaman kedua
+curl http://127.0.0.1:8000/api/warga/?page=2
+```
+
+### 5. Menggunakan Search
+```bash
+# Cari warga bernama "Budi"
+curl "http://127.0.0.1:8000/api/warga/?search=Budi"
+
+# Cari berdasarkan NIK
+curl "http://127.0.0.1:8000/api/warga/?search=3501234567890001"
+
+# Cari pengaduan dengan keyword "jalan"
+curl -H "Authorization: Token YOUR_TOKEN" \
+  "http://127.0.0.1:8000/api/pengaduan/?search=jalan"
+```
+
+### 6. Menggunakan Ordering
+```bash
+# Urutkan warga A-Z berdasarkan nama
+curl "http://127.0.0.1:8000/api/warga/?ordering=nama_lengkap"
+
+# Urutkan Z-A (descending)
+curl "http://127.0.0.1:8000/api/warga/?ordering=-nama_lengkap"
+
+# Urutkan berdasarkan tanggal registrasi (terbaru dulu)
+curl "http://127.0.0.1:8000/api/warga/?ordering=-tanggal_registrasi"
+
+# Urutkan pengaduan berdasarkan status
+curl -H "Authorization: Token YOUR_TOKEN" \
+  "http://127.0.0.1:8000/api/pengaduan/?ordering=status"
+```
+
+### 7. Kombinasi Query Parameters
+```bash
+# Search + Ordering
+curl "http://127.0.0.1:8000/api/warga/?search=Siti&ordering=nama_lengkap"
+
+# Search + Ordering + Pagination
+curl "http://127.0.0.1:8000/api/warga/?search=Ahmad&ordering=-tanggal_registrasi&page=1"
+
+# Dengan Authentication
+curl -H "Authorization: Token YOUR_TOKEN" \
+  "http://127.0.0.1:8000/api/pengaduan/?search=rusak&ordering=-tanggal_lapor&page=1"
+```
+
+### 8. Testing dengan Postman / Insomnia
+
+#### Import Insomnia Collection (Recommended)
+File: `Insomnia_P9_P10_API_Tests.yaml`
+
+Collection ini berisi 24+ pre-configured requests untuk testing:
+- ✅ P9: Authentication & Permissions (7 requests)
+- ✅ P10: Pagination (2 requests)
+- ✅ P10: Searching (5 requests)
+- ✅ P10: Ordering (5 requests)
+- ✅ P10: Combined Queries (2 requests)
+
+**Cara Import:**
+1. Buka Insomnia
+2. Create → Import From → File
+3. Pilih `Insomnia_P9_P10_API_Tests.yaml`
+4. Edit Environment variables:
+   - `base_url`: `http://127.0.0.1:8000`
+   - `username`: your superuser username
+   - `password`: your superuser password
+5. Run "Get Authentication Token" request
+6. Copy token dari response ke environment variable `auth_token`
+7. Test semua endpoints!
+
+#### Manual Testing dengan Postman:
+
+**Mendapatkan Token:**
+1. Method: `POST`
+2. URL: `http://127.0.0.1:8000/api/auth/token/`
+3. Headers: `Content-Type: application/json`
+4. Body (raw JSON):
+   ```json
+   {
+     "username": "admin",
+     "password": "admin123"
+   }
+   ```
+5. Copy token dari response
+
+**Menggunakan Token:**
+1. Method: `GET` / `POST` / `PUT` / `DELETE`
+2. URL: `http://127.0.0.1:8000/api/pengaduan/`
+3. Headers Tab:
+   - Key: `Authorization`
+   - Value: `Token 9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b`
+
+**Query Parameters di Postman:**
+1. Gunakan Params tab
+2. Tambahkan key-value pairs:
+   - `search`: `Budi`
+   - `ordering`: `-tanggal_registrasi`
+   - `page`: `1`
+
+## Permission Levels
+
+### WargaViewSet - IsAuthenticatedOrReadOnly
+- ✅ **Public (No Token)**: GET (list & detail)
+- ❌ **Public (No Token)**: POST, PUT, PATCH, DELETE → 401 Unauthorized
+- ✅ **Authenticated**: All methods (GET, POST, PUT, PATCH, DELETE)
+
+### PengaduanViewSet - IsAuthenticated
+- ❌ **Public (No Token)**: All methods → 401 Unauthorized
+- ✅ **Authenticated**: All methods (GET, POST, PUT, PATCH, DELETE)
 
 ## Teknologi
 
 - **Framework**: Django 5.2.7
-- **API Framework**: Django REST Framework
+- **API Framework**: Django REST Framework 3.16.1
 - **Database**: SQLite3
 - **Python**: 3.13.7
 - **Template Engine**: Django Templates
 - **API Format**: JSON
+- **Authentication**: Token Authentication
+- **Filtering**: django-filter 25.0
 - **Environment**: Virtual Environment (myenv)
+
+## Best Practices Implemented
+
+### Security (P9)
+- ✅ Token-based authentication untuk stateless API
+- ✅ Role-based access control dengan permission classes
+- ✅ Protected endpoints untuk sensitive data
+- ✅ Separation of public dan private endpoints
+
+### Performance (P10)
+- ✅ Pagination untuk efficient data loading
+- ✅ Query optimization dengan filtering
+- ✅ Database indexing pada search fields
+- ✅ Reduced response size dengan pagination
+
+### API Design
+- ✅ RESTful URL structure
+- ✅ Proper HTTP methods dan status codes
+- ✅ Consistent error responses
+- ✅ Browsable API untuk documentation
+- ✅ Query parameters untuk flexible data retrieval
+
+## Troubleshooting
+
+### Token Authentication Issues
+- **401 Unauthorized**: Pastikan token valid dan format header benar
+  ```
+  Authorization: Token 9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b
+  ```
+- **Token tidak ada**: Buat superuser dan request token via `/api/auth/token/`
+
+### Pagination Issues
+- Response tidak ter-paginate: Periksa `REST_FRAMEWORK` configuration di `settings.py`
+- PAGE_SIZE terlalu kecil/besar: Sesuaikan nilai `PAGE_SIZE` di settings
+
+### Search/Filter Issues
+- Search tidak bekerja: Pastikan `django-filter` terinstall dan ada di `INSTALLED_APPS`
+- Field tidak searchable: Tambahkan field ke `search_fields` di ViewSet
+
+### Migration Issues
+- Jika ada error saat migrate: Hapus `db.sqlite3` dan jalankan ulang `python manage.py migrate`
+- Token table tidak ada: Pastikan `rest_framework.authtoken` ada di `INSTALLED_APPS`
+
+## Test Files
+
+### 1. Insomnia Collection
+**File**: `Insomnia_P9_P10_API_Tests.yaml`
+- 24+ pre-configured API requests
+- Organized in 7 folders by feature
+- Environment variables for easy configuration
+- Complete coverage of P9 & P10 features
+
+### 2. Python Test Script
+**File**: `test_api_features.py`
+- Automated testing script
+- 8 comprehensive test functions
+- Interactive token authentication
+- Run with: `python test_api_features.py`
+
+### 3. Implementation Summary
+**File**: `IMPLEMENTATION_SUMMARY.md`
+- Complete implementation documentation
+- Files modified/created list
+- Testing results
+- API endpoints summary
+
+## Referensi
+
+- [Django Documentation](https://docs.djangoproject.com/)
+- [Django REST Framework](https://www.django-rest-framework.org/)
+- [DRF Authentication](https://www.django-rest-framework.org/api-guide/authentication/)
+- [DRF Permissions](https://www.django-rest-framework.org/api-guide/permissions/)
+- [DRF Filtering](https://www.django-rest-framework.org/api-guide/filtering/)
+- [DRF Pagination](https://www.django-rest-framework.org/api-guide/pagination/)
+- [Insomnia REST Client](https://insomnia.rest/)
