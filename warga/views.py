@@ -51,16 +51,38 @@ class PengaduanDeleteView(DeleteView):
 
 # Impor baru untuk DRF
 from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
+from rest_framework.filters import SearchFilter, OrderingFilter
 from .serializers import WargaSerializer, PengaduanSerializer
 
 # --- API VIEWS ---
 class WargaViewSet(viewsets.ModelViewSet):
-    """CRUD endpoint for data warga."""
+    """
+    CRUD endpoint for data warga.
+    P9: Public can read, authenticated users can write
+    P10: Supports pagination, searching, and ordering
+    """
     queryset = Warga.objects.all().order_by('-tanggal_registrasi')
     serializer_class = WargaSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]  # P9: Read-only for public
+
+    # P10: Filtering, Searching, and Ordering
+    filter_backends = [SearchFilter, OrderingFilter]
+    search_fields = ['nama_lengkap', 'nik', 'alamat']
+    ordering_fields = ['nama_lengkap', 'tanggal_registrasi']
 
 
 class PengaduanViewSet(viewsets.ModelViewSet):
-    """CRUD endpoint for data pengaduan."""
+    """
+    CRUD endpoint for data pengaduan.
+    P9: Only authenticated users can access
+    P10: Supports pagination, searching, and ordering
+    """
     queryset = Pengaduan.objects.all().order_by('-tanggal_lapor')
     serializer_class = PengaduanSerializer
+    permission_classes = [IsAuthenticated]  # P9: Authenticated users only
+
+    # P10: Filtering, Searching, and Ordering
+    filter_backends = [SearchFilter, OrderingFilter]
+    search_fields = ['judul', 'deskripsi']
+    ordering_fields = ['status', 'tanggal_lapor']
