@@ -41,9 +41,12 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',  # P9: Token Authentication
     'django_filters',  # P10: Filtering support
+    'corsheaders',  # P11: CORS support
+    'drf_spectacular',  # P12: API Documentation
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',  # P11: CORS Middleware (must be at top)
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -128,6 +131,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Django REST Framework Configuration
 # P9: Authentication & Permissions
 # P10: Pagination, Filtering, Searching
+# P12: Schema generation with drf-spectacular
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
@@ -137,4 +141,35 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',  # P12: OpenAPI schema
+}
+
+# P11: CORS Configuration
+# Allow all origins for development - CHANGE THIS IN PRODUCTION!
+CORS_ALLOW_ALL_ORIGINS = True
+
+# For production, use:
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:3000",
+#     "http://127.0.0.1:3000",
+#     "https://your-production-domain.com",
+# ]
+
+# P12: DRF Spectacular Settings
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'API Aplikasi Warga Kelurahan',
+    'DESCRIPTION': 'Dokumentasi API untuk mengelola data warga dan pengaduan. '
+                   'API ini menyediakan endpoint untuk CRUD operations pada data warga dan pengaduan, '
+                   'dengan fitur authentication, pagination, searching, dan filtering.',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    # Authentication configuration
+    'SECURITY': [{'tokenAuth': []}],
+    'COMPONENT_SPLIT_REQUEST': True,
+    # Swagger UI settings
+    'SWAGGER_UI_SETTINGS': {
+        'deepLinking': True,
+        'persistAuthorization': True,
+        'displayOperationId': True,
+    },
 }

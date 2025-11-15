@@ -58,9 +58,26 @@ from .serializers import WargaSerializer, PengaduanSerializer
 # --- API VIEWS ---
 class WargaViewSet(viewsets.ModelViewSet):
     """
-    CRUD endpoint for data warga.
-    P9: Public can read, authenticated users can write
-    P10: Supports pagination, searching, and ordering
+    API endpoint untuk mengelola data warga kelurahan.
+    
+    Fitur:
+    - **P9 (Authentication)**: Public dapat membaca, user authenticated dapat menulis
+    - **P10 (Search)**: Pencarian berdasarkan nama_lengkap, NIK, atau alamat
+    - **P10 (Ordering)**: Pengurutan berdasarkan nama_lengkap atau tanggal_registrasi
+    - **P10 (Pagination)**: 10 item per halaman
+    
+    Query Parameters:
+    - `search`: Cari warga (contoh: ?search=Budi)
+    - `ordering`: Urutkan data (contoh: ?ordering=nama_lengkap atau ?ordering=-tanggal_registrasi)
+    - `page`: Nomor halaman (contoh: ?page=2)
+    
+    Contoh Penggunaan:
+    - GET /api/warga/ - List semua warga (paginated)
+    - GET /api/warga/?search=Budi - Cari warga dengan kata kunci "Budi"
+    - GET /api/warga/?ordering=nama_lengkap - Urutkan berdasarkan nama A-Z
+    - POST /api/warga/ - Tambah warga baru (requires authentication)
+    - PUT /api/warga/{id}/ - Update warga (requires authentication)
+    - DELETE /api/warga/{id}/ - Hapus warga (requires authentication)
     """
     queryset = Warga.objects.all().order_by('-tanggal_registrasi')
     serializer_class = WargaSerializer
@@ -74,9 +91,26 @@ class WargaViewSet(viewsets.ModelViewSet):
 
 class PengaduanViewSet(viewsets.ModelViewSet):
     """
-    CRUD endpoint for data pengaduan.
-    P9: Only authenticated users can access
-    P10: Supports pagination, searching, and ordering
+    API endpoint untuk mengelola data pengaduan warga.
+    
+    Fitur:
+    - **P9 (Authentication)**: Hanya user authenticated yang dapat mengakses
+    - **P10 (Search)**: Pencarian berdasarkan judul atau deskripsi pengaduan
+    - **P10 (Ordering)**: Pengurutan berdasarkan status atau tanggal_lapor
+    - **P10 (Pagination)**: 10 item per halaman
+    
+    Query Parameters:
+    - `search`: Cari pengaduan (contoh: ?search=lampu)
+    - `ordering`: Urutkan data (contoh: ?ordering=status atau ?ordering=-tanggal_lapor)
+    - `page`: Nomor halaman (contoh: ?page=2)
+    
+    Contoh Penggunaan:
+    - GET /api/pengaduan/ - List semua pengaduan (requires authentication)
+    - GET /api/pengaduan/?search=jalan - Cari pengaduan terkait "jalan"
+    - GET /api/pengaduan/?ordering=-tanggal_lapor - Urutkan terbaru ke terlama
+    - POST /api/pengaduan/ - Tambah pengaduan baru (requires authentication)
+    - PUT /api/pengaduan/{id}/ - Update pengaduan (requires authentication)
+    - DELETE /api/pengaduan/{id}/ - Hapus pengaduan (requires authentication)
     """
     queryset = Pengaduan.objects.all().order_by('-tanggal_lapor')
     serializer_class = PengaduanSerializer
@@ -86,3 +120,4 @@ class PengaduanViewSet(viewsets.ModelViewSet):
     filter_backends = [SearchFilter, OrderingFilter]
     search_fields = ['judul', 'deskripsi']
     ordering_fields = ['status', 'tanggal_lapor']
+
